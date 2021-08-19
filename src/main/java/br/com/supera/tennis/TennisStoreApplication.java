@@ -15,8 +15,6 @@ public class TennisStoreApplication {
 
 		SpringApplication.run(TennisStoreApplication.class, args);
 
-
-
 	}
 
 }
