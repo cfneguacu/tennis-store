@@ -7,9 +7,9 @@
             <class>br.com.supera.tennis.store.Product</class>
 
             <properties>
-                <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/digital_innovation_one?useTimezone=true&amp;serverTimezone=UTC" />
-                <property name="javax.persistence.jdbc.user" value="postgres" />
-                <property name="javax.persistence.jdbc.password" value="@Neves123"/>
+                <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-35-153-114-74.compute-1.amazonaws.com:5432/d7bpn5vchf0ppd" />
+                <property name="javax.persistence.jdbc.user" value="nwtqjmjkigbrmj" />
+                <property name="javax.persistence.jdbc.password" value="bdd78bfdd7ff44724198f71796dff365a50b8355b3e75932c1d55c750cf4b460"/>
                 <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
                 <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
