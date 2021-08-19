@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Controle de Cadastros</title>
+	<!--script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"--><!--/script-->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="http://code.jquery.com/ui/jquery-ui-git.js"></script>
+	<style type ="text/css">
+
+html {
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 5%;
+}
+.container {
+  padding: 2rem 0rem;
+}
+
+h3:after{
+  content: ' ';
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 10px;
+  background: -webkit-linear-gradient(left, rgba(147,184,189,0) 0%,rgba(147,184,189,0.8) 20%,rgba(147,184,189,1) 53%,rgba(147,184,189,0.8) 79%,rgba(147,184,189,0) 100%); 
+  background: linear-gradient(left, rgba(147,184,189,0) 0%,rgba(147,184,189,0.8) 20%,rgba(147,184,189,1) 53%,rgba(147,184,189,0.8) 79%,rgba(147,184,189,0) 100%); 
+}
+
+h4 {
+  margin: 2rem 0rem 1rem;
+}
+
+label{
+  position: relative;
+}
+
+body {
+    font-family: Verdana;
+    margin: 10px;
+}
+fieldset {
+    padding: 5px;
+}
+.color-one {
+    background-color: green;
+}
+.produto {
+    width: 150px;
+    height: 100px;
+    margin: 5px;
+    float: left;
+}
+.divproduto{
+    width: 150px;
+    height: 200px;
+    margin: 5px;
+    float: left;
+  }
+
+legend {
+    font-size: 1em;
+}
+
+</style>
+</head>
+<body style="background-image: url('fundo_sistema.jpg'); position: relative; height: 100vh; width: 100vw; background-size: cover; background-attachment: fixed;">
+	<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3">
+            <button type="button" class="btn btn-primary" id="finalizar">Finalizar Compra</button>
+            <button type="button" class="btn btn-danger" id="limpar">Limpar Carrinho</button>
+            <button type="button" class="btn btn-success" id="total">Total</button>
+			<div class="form-group" id="moeda">
+				<label>Seleção de moeda</label>
+				<select class="form-select" id="conversao">
+					<option value = "real">BRL-Real</option>
+					<option value = "dolar">USD-Dolar</option>
+					<option value = "euro">EUR-Euro</option>
+					<option value = "rupia">INR-Rúpia</option>
+				</select>
+			</div>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="form-check">
+  		<input class="form-check-input" type="radio" name="opcao" id="porpreco1" value="porpreco" required = "required" checked>
+  		<label class="form-check-label">
+  		  Ordenar por preço
+  		</label>
+		</div>
+		<div class="form-check">
+  		<input class="form-check-input" type="radio" name="opcao" id="porpopularidade1" value="porpopularidade" required = "required">
+  		<label class="form-check-label">
+  		  Ordenar por popularidade
+  		</label>
+		</div>
+		<div class="form-check">
+  		<input class="form-check-input" type="radio" name="opcao" id="ordemalfabetica1" value = "ordemalfabetica" required = "required">
+  		<label class="form-check-label">
+  		 Ordem Alfabetica
+  		</label>
+		</div>
+        <div class ="col-sm-6">
+            <fieldset id = "produtos">
+				<legend>Produtos (clique no produto para coloca-lo no carrinho)</legend>
+			</fieldset>
+        </div>
+        <div class="col-sm-6">
+            <fieldset id="carrinho">
+                <div id="itens"></div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+	<script>
+
+  	 $('#carrinho, #total, #finalizar, #limpar, #moeda').hide();
+  	//$(".produto").tooltip();
+
+ // Colocando produto no carrinho.
+ 	 function clique(){
+ 	 var cont = 0;
+ 	 $(".produto").on('click', function(){
+ 	 if(cont == 0){
+     $('#carrinho-vazio').remove();
+     $('#carrinho, #total, #finalizar, #limpar, #moeda').show();
+     var prod = $(this).clone().addClass('remove').hide().fadeIn(500);
+     $('#itens').append(prod);
+     var total = 0;
+     var precos = $('#itens img');
+     	$(precos).each(function( index, value ) {
+        	 total = total + parseFloat($(this).attr('data-preco'));
+        	 $('#total').text('BRL '+total.toFixed(2));
+    	 });
+    	 cont = cont + 1;
+     }
+     });
+     }
+
+ // Retirando todos os produtos do carrinho.
+ $(document).on('click', '#limpar', function(){
+     $('#itens').empty();
+     $('#carrinho').append("<div class='alert alert-danger' id='carrinho-vazio' role='alert'>Carrinho Vazio</div>").fadeOut(2000);
+     $('#total, #finalizar, #limpar, #moeda').hide();
+ });
+
+ // Retirando um produto do carrinho.
+
+ // Finalizando a compra.
+ $(document).on('click', '#finalizar', function(){
+     /*
+     $.ajax({
+         Aqui você faz sua requisição ajax com o server-side (asp, php, etc).
+         Mais informações em http://api.jquery.com/jQuery.ajax
+     });
+     */
+ });
+	  
+  	var opcao;
+
+  	$('input:radio[name=opcao]').each(function() {
+ 			if ($(this).is(":checked")) {
+ 	    	opcao = $(this).val();
+ 	    	escolha(opcao);
+ 	    	}
+ 		 })
+
+  	$('input:radio[name=opcao]').click(function () {
+ 		 $('input:radio[name=opcao]').each(function() {
+ 			if ($(this).is(":checked")) {
+ 	    	opcao = $(this).val();
+ 	    	escolha(opcao);
+ 	    	}
+ 		 })
+  	})
+	 
+	 function escolha(opcao){
+	 //console.log(opcao);
+  	 	if(opcao  == 'porpreco'){
+  			//administrativo = true;
+  			$.ajax({
+  				url: "productsbyprice",
+  				method: "GET",
+  				success: function(response){
+  		  			$('#produtos > div').remove();
+ 					for (var i = 0; i < response.length; i++){
+  		 				$('#produtos').append('<div class ="divproduto"><img id="'+i+'" class="produto" data-placement="bottom" title="'+response[i].name+'" data-preco="'+response[i].price+'" data-produto="'+response[i].name+'" src="'+response[i].image+'" onclick ="clique()"/>'+response[i].name+'</div>');
+  		 			}
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar produto:" + xhr.responseText);
+  		  	}); 
+  			
+  		}else if(opcao  == 'porpopularidade'){
+  			//administrativo = true;
+  			$.ajax({
+  				url: "productsbyscore",
+  				method: "GET",
+  				success: function(response){
+  		  			$('#produtos > div').remove();
+  		  			for (var i = 0; i < response.length; i++){
+  		 				$('#produtos').append('<div class ="divproduto"><img id="'+i+'" class="produto" data-placement="bottom" title="'+response[i].name+'" data-preco="'+response[i].price+'" data-produto="'+response[i].name+'" src="'+response[i].image+'" onclick ="clique()"/>'+response[i].name+'</div>');
+  		 			}
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar produto:" + xhr.responseText);
+  		  	}); 
+  			
+  		}else if(opcao == 'ordemalfabetica'){
+  			
+  			$.ajax({
+  				url: "productsbyasc",
+  				method: "GET",
+  				success: function(response){
+  		  			$('#produtos > div').remove();
+  		  			for (var i = 0; i < response.length; i++){
+  		 				$('#produtos').append('<div class ="divproduto"><img id="'+i+'" class="produto" data-placement="bottom" title="'+response[i].name+'" data-preco="'+response[i].price+'" data-produto="'+response[i].name+'" src="'+response[i].image+'" onclick ="clique()"/>'+response[i].name+'</div>');
+  		 			}
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar produto:" + xhr.responseText);
+  		  	}); 
+  			
+  		}
+	}
+	// conversão de moeda
+
+	$("#conversao").click(function () {
+ 	        $("#conversao").each(function () {
+ 	          $(this).find("option").each(function () {
+ 	            if ($(this).attr("selected")) {
+				      var moeda = $("#conversao option:selected").val()
+				      var total = parseFloat($('#total').text().substring(4));
+					  moedaconversao(total, moeda);
+ 	             $(this).removeAttr("selected");
+ 	            }
+ 	          });
+ 	        });
+ 	   $("#conversao").find("option:selected").attr("selected", true);
+ 	})
+
+	 function moedaconversao(total, moeda){
+
+  	 	if($('#total').text().substring(0,3) == 'USD' && moeda == 'real'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/USD-BRL",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.USDBRL.low);
+  		  			console.log(total)
+  		  			$('#total').text('BRL '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+
+  		}else if($('#total').text().substring(0,3) == 'EUR' && moeda == 'real'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/EUR-BRL",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.EURBRL.low);
+  		  			$('#total').text('BRL '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+
+  		}else if($('#total').text().substring(0,3) == 'INR' && moeda == 'real'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/INR-BRL",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.INRBRL.low);
+  		  			$('#total').text('BRL '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+
+  		}else if($('#total').text().substring(0,3) == 'BRL' && moeda == 'dolar'){
+  		
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/BRL-USD",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.BRLUSD.low);
+  		  			$('#total').text('USD '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+  		  }else if($('#total').text().substring(0,3) == 'EUR' && moeda == 'dolar'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/EUR-USD",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.EURUSD.low);
+  		  			$('#total').text('USD '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+  		}else if($('#total').text().substring(0,3) == 'INR' && moeda == 'dolar'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/INR-USD",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.INRUSD.low);
+  		  			$('#total').text('USD '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+
+  		} else if($('#total').text().substring(0,3) == 'USD' && moeda == 'euro'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/USD-EUR",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.USDEUR.low);
+  		  			$('#total').text('EUR '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+		}else if($('#total').text().substring(0,3) == 'BRL' && moeda == 'euro'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/BRL-EUR",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.BRLEUR.low);
+  		  			$('#total').text('EUR '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+
+		}else if($('#total').text().substring(0,3) == 'INR' && moeda == 'euro'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/INR-EUR",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.INREUR.low);
+  		  			$('#total').text('EUR '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+		}else if($('#total').text().substring(0,3) == 'USD' && moeda == 'rupia'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/USD-INR",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.USDINR.low);
+  		  			$('#total').text('INR '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+		}else if($('#total').text().substring(0,3) == 'BRL' && moeda == 'rupia'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/BRL-INR",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.BRLINR.low);
+  		  			$('#total').text('INR '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+  		}else if($('#total').text().substring(0,3) == 'EUR' && moeda == 'rupia'){
+
+  		$.ajax({
+  				url: "https://economia.awesomeapi.com.br/json/last/EUR-INR",
+  				method: "GET",
+  				success: function(response){
+  		  			//$('#produtos > div').remove();
+  		  			total = total * parseFloat(response.EURINR.low);
+  		  			$('#total').text('INR '+total.toFixed(2));
+  		  		}
+  		  	}).fail(function(xhr,status,errorThrown){
+  		  		alert("Erro ao buscar moeda:" + xhr.responseText);
+  		  	});
+  		}
+	}
+</script>
+</body>
+</html>
