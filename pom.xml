@@ -116,10 +116,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
 </dependency>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-      </dependency>
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
     <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     <dependency>
