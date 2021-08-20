@@ -6,7 +6,7 @@
             <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
             <class>br.com.supera.tennis.store.Product</class>
 
-            <properties>
+            <!--properties>
                 <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-35-153-114-74.compute-1.amazonaws.com:5432/d7bpn5vchf0ppd" />
                 <property name="javax.persistence.jdbc.user" value="nwtqjmjkigbrmj" />
                 <property name="javax.persistence.jdbc.password" value="bdd78bfdd7ff44724198f71796dff365a50b8355b3e75932c1d55c750cf4b460"/>
@@ -16,7 +16,7 @@
                 <property name="hibernate.show_sql" value="true"/>
                 <property name="hibernate.format_sql" value="true"/>
                 <property name="hibernate.hbm2ddl.auto" value=""/>
-            </properties>
+            <properties-->
 
     </persistence-unit>
 
