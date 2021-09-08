@@ -1,4 +1,4 @@
-<h2>Digital Innovation: Expert class - Desenvolvendo um sistema de gerenciamento de pessoas em API REST com Spring Boot</h2>
+<h2>Tenis Store , Loja de Tenis com banco de dados postgres, com conversão de moeda</h2>
 
 Para clonar o projeto(com GitHub Cli)
 ```
@@ -25,6 +25,7 @@ São necessários os seguintes pré-requisitos para a execução do projeto:
 * Controle de versão GIT instalado na sua máquina.
 * GitHub Cli instalado na sua maquina.
 * Conta no GitHub para o armazenamento do seu projeto na nuvem.
+* PostgreSQL instalado na sua maquina.
 
 
 Abaixo, seguem links dos principais recursos usados no projeto.
@@ -37,3 +38,7 @@ Abaixo, seguem links dos principais recursos usados no projeto.
 * [Site oficial do GitHub](http://github.com/)
 * [Github Cli](https://cli.github.com/)
 * [Referência para o padrão arquitetural REST](https://restfulapi.net/)
+* [Site oficial PostgreSQL](https://www.postgresql.org/)
+* [API de Cotações de Moedas AwesomeAPI](https://docs.awesomeapi.com.br/api-de-moedas)
+
+
