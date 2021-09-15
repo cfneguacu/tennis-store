@@ -1,4 +1,4 @@
-<h2>Tenis Store , Loja de Tenis com banco de dados postgres, com conversão de moeda</h2>
+<h2>Tenis Store , Loja de Tenis com banco de dados PostgreSQL, com conversão de moeda</h2>
 
 Para clonar o projeto(com GitHub Cli)
 ```
